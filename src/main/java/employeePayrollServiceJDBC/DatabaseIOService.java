@@ -12,6 +12,7 @@ package employeePayrollServiceJDBC;
  */
 import java.sql.Connection;
 import java.sql.DriverManager;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
@@ -91,5 +92,45 @@ public class DatabaseIOService {
 		String password = "123456";
 		System.out.println("Establishing connection to database : " + jdbcURL);
 		return DriverManager.getConnection(jdbcURL, userName, password);
+	}
+
+	/**
+	 * Create method updateEmployeeDataUsingPreparedStatement Passing Parameters
+	 * 
+	 * @param name
+	 * @param salary
+	 * @return
+	 * @throws DBException
+	 */
+	private int updateEmployeeDataUsingPreparedStatement(String name, double salary) throws DBException {
+		String sql = "update employee_payroll set salary = ? where name = ?";
+		try (Connection connection = this.establishConnection()) {
+			System.out.println("Connection is successfull!!! " + connection);
+			PreparedStatement employeePayrollUpdateStatement = connection.prepareStatement(sql);
+			employeePayrollUpdateStatement.setDouble(1, salary);
+			employeePayrollUpdateStatement.setString(2, name);
+			return employeePayrollUpdateStatement.executeUpdate();
+		} catch (SQLException e) {
+			throw new DBException("Cannot establish connection", DBException.ExceptionType.CONNECTION_FAIL);
+		}
+	}
+
+	/**
+	 * 
+	 * @param name
+	 * @param salary
+	 * @return
+	 * @throws DBException
+	 */
+	@SuppressWarnings("unused")
+	private int updateEmployeeDataUsingStatement1(String name, double salary) throws DBException {
+		String sql = String.format("update employee_payroll set salary = %.2f where name = '%s'", salary, name);
+		try (Connection connection = this.establishConnection()) {
+			System.out.println("Connection is successfull!!! " + connection);
+			Statement statement = connection.createStatement();
+			return statement.executeUpdate(sql);
+		} catch (SQLException e) {
+			throw new DBException("Cannot establish connection", DBException.ExceptionType.CONNECTION_FAIL);
+		}
 	}
 }

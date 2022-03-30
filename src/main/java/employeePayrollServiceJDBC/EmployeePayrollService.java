@@ -91,6 +91,15 @@ public class EmployeePayrollService {
 
 	}
 
+	public void writeEmployeeData1(IOService ioType) {
+		if (ioType.equals(IOService.CONSOLE_IO)) {
+			for (EmployeePayrollData o : employeePayrollList)
+				System.out.println(o.toString());
+		} else if (ioType.equals(IOService.FILE_IO)) {
+			new FileIOService().writeData(employeePayrollList);
+		}
+	}
+
 	public long countEnteries1(IOService ioType) {
 		if (ioType.equals(IOService.FILE_IO))
 			return new FileIOService().countEntries();
