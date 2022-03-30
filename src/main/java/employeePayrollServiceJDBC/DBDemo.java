@@ -29,7 +29,7 @@ public class DBDemo {
 		/**
 		 * password
 		 */
-		String password = "123456"; 
+		String password = "123456";
 		Connection connection;
 		try {
 			Class.forName("com.mysql.cj.jdbc.Driver");
@@ -46,7 +46,7 @@ public class DBDemo {
 			e.printStackTrace();
 		}
 	}
-	
+
 	/**
 	 * create method listDrivers
 	 */
